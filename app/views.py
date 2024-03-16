@@ -16,7 +16,25 @@ from flask import render_template, request, redirect, url_for
 @app.route('/')
 def home():
     """Render website's home page."""
-    return render_template('home.html')
+    return redirect(url_for('create_property'))
+
+
+@app.route('/properties')
+def properties():
+    """Render website's home page."""
+    return render_template('properties.html')
+
+
+@app.route('/properties/<projectid>')
+def get_property(projectid):
+    """Render website's home page."""
+    return render_template('property.html')
+
+
+@app.route('/properties/create')
+def create_property():
+    """Render website's home page."""
+    return render_template('create.html')
 
 
 @app.route('/about/')
@@ -37,6 +55,7 @@ def flash_errors(form):
                 getattr(form, field).label.text,
                 error
             ), 'danger')
+
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
