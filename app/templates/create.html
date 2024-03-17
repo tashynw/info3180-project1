@@ -1,59 +1,105 @@
-{% extends "base.html" %}
-
-
-{% block main %}
+{% extends "base.html" %} {% block main %}
 <h1>Add New Property</h1>
-<div style="padding: 30px;padding-right: 50px;background-color: white;border-radius: 10px;display: flex;flex-direction: column;gap: 15px;margin-top: 20px;">
-  <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-    <p style="font-weight: 500;">Property Title</p>
-    <input class="form-control" />
-  </div>
-  <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-    <p style="font-weight: 500;">Description</p>
-    <textarea class="form-control"></textarea>
-  </div>
-  <div style="display: flex;flex-direction: row;width: 100%;gap: 50px;justify-content: space-between;">
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-      <p style="font-weight: 500;">No of Rooms</p>
-      <input class="form-control" type="number" />
-    </div>
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-      <p style="font-weight: 500;">No of Bedrooms</p>
-      <input class="form-control" type="number" />
-    </div>
-  </div>
-  <div style="display: flex;flex-direction: row;width: 100%;gap: 50px;justify-content: space-between;">
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-      <p style="font-weight: 500;">Price</p>
-      <input class="form-control" />
-    </div>
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-      <p style="font-weight: 500;">Property Type</p>
-      <select class="form-select">
-        <option value="House">House</option>
-        <option value="Studio">Studio</option>
-        <option value="Townhouse">Townhouse</option>
-        <option value="Apartment">Apartment</option>
-      </select>
-    </div>
-  </div>
-  <div style="display: flex;flex-direction: row;width: 100%;gap: 50px;justify-content: space-between;">
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-      <p style="font-weight: 500;">Location</p>
-      <input class="form-control" />
-    </div>
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-    </div>
-  </div>
-  <div style="display: flex;flex-direction: row;width: 100%;gap: 50px;justify-content: space-between;">
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-      <p style="font-weight: 500;">Photo</p>
-      <input class="form-control" type="file" />
-    </div>
-    <div style="display: flex;flex-direction: column;gap: 0px;width: 100%;">
-    </div>
-  </div>
-  <button class="btn btn-primary" style="width: 150px;">Add Property</button>
 
-</div>
+<form
+  action="{{ url_for('create_property') }}"
+  method="post"
+  enctype="multipart/form-data"
+>
+  {{ form.csrf_token }}
+  <div
+    style="
+      padding: 30px;
+      padding-right: 50px;
+      background-color: white;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    "
+  >
+    <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+      <p style="font-weight: 500">{{ form.property_title.label }}</p>
+      {{ form.property_title(**{'class': 'form-control'}) }}
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+      <p style="font-weight: 500">{{ form.description.label }}</p>
+      {{ form.description(**{'class': 'form-control'}) }}
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 50px;
+        justify-content: space-between;
+      "
+    >
+      <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+        <p style="font-weight: 500">{{ form.rooms_number.label }}</p>
+        {{ form.rooms_number(**{'class': 'form-control'}) }}
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+        <p style="font-weight: 500">{{ form.bedrooms_number.label }}</p>
+        {{ form.bedrooms_number(**{'class': 'form-control'}) }}
+      </div>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 50px;
+        justify-content: space-between;
+      "
+    >
+      <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+        <p style="font-weight: 500">{{ form.price.label }}</p>
+        {{ form.price(**{'class': 'form-control'}) }}
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+        <p style="font-weight: 500">{{ form.property_type.label }}</p>
+        {{ form.property_type(**{'class': 'form-select'}) }}
+      </div>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 50px;
+        justify-content: space-between;
+      "
+    >
+      <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+        <p style="font-weight: 500">{{ form.location.label }}</p>
+        {{ form.location(**{'class': 'form-control'}) }}
+      </div>
+      <div
+        style="display: flex; flex-direction: column; gap: 0px; width: 100%"
+      ></div>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 50px;
+        justify-content: space-between;
+      "
+    >
+      <div style="display: flex; flex-direction: column; gap: 0px; width: 100%">
+        <p style="font-weight: 500">{{ form.photo.label }}</p>
+        {{ form.photo(**{'class': 'form-control'}) }}
+      </div>
+      <div
+        style="display: flex; flex-direction: column; gap: 0px; width: 100%"
+      ></div>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width: 150px">
+      Add Property
+    </button>
+  </div>
+</form>
 {% endblock %}
