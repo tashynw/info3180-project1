@@ -6,7 +6,7 @@ This file contains the routes for your application.
 """
 import os
 from app import app, db
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, send_from_directory
 from app.forms import PropertyForm
 from werkzeug.utils import secure_filename
 from app.models import Property
@@ -16,22 +16,32 @@ from app.models import Property
 ###
 
 
+def format_price(price):
+    return "${:,.2f}".format(price)
+
+
 @app.route('/')
 def home():
-    """Render website's home page."""
     return redirect(url_for('create_property'))
 
 
 @app.route('/properties')
 def properties():
-    """Render website's home page."""
-    return render_template('properties.html')
+    properties = db.session.execute(db.select(Property)).scalars().all()
+
+    return render_template('properties.html', properties=properties, format_price=format_price)
 
 
-@app.route('/properties/<projectid>')
-def get_property(projectid):
-    """Render website's home page."""
-    return render_template('property.html')
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    return send_from_directory(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']), filename)
+
+
+@app.route('/properties/<propertyid>')
+def get_property(propertyid):
+    property = db.get_or_404(Property, propertyid)
+
+    return render_template('property.html', property=property, format_price=format_price)
 
 
 @app.route('/properties/create', methods=["POST", "GET"])
@@ -45,13 +55,13 @@ def create_property():
             app.config["UPLOAD_FOLDER"], filename
         ))
 
-        property = Property(property_title=form.data["property_title"], rooms_number=form.data["rooms_number"], bedrooms_number=form.data["bedrooms_number"],
-                            price=form.data["price"], property_type=form.data["property_type"], location=form.data["location"], photo_filename=filename)
+        property = Property(property_title=form.data["property_title"], rooms_number=form.data["rooms_number"], bathrooms_number=form.data["bathrooms_number"],
+                            price=form.data["price"], property_type=form.data["property_type"], location=form.data["location"], description=form.data["description"], photo_filename=filename)
         db.session.add(property)
         db.session.commit()
 
         flash('Property was successfully added! ✅')
-        redirect(url_for('properties'))
+        return redirect(url_for('properties'))
 
     return render_template('create.html', form=form)
 
@@ -59,7 +69,7 @@ def create_property():
 @app.route('/about/')
 def about():
     """Render the website's about page."""
-    return render_template('about.html', name="Mary Jane")
+    return render_template('about.html', name="Tashyn Wallace")
 
 
 ###

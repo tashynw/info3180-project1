@@ -7,9 +7,10 @@ class Property(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     property_title = db.Column(db.String(128))
     rooms_number = db.Column(db.Integer)
-    bedrooms_number = db.Column(db.Integer)
+    bathrooms_number = db.Column(db.Integer)
     price = db.Column(db.Float)
     property_type = db.Column(db.String(128))
+    description = db.Column(db.String(128))
     location = db.Column(db.String(128))
     photo_filename = db.Column(db.String(128))
 
